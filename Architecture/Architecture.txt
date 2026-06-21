@@ -1,0 +1,19 @@
+Windows Host (Universal Forwarder)
+        |
+        |
+        v
+Splunk Server (Port 9997)
+        |
+        |
+        v
+Search & Reporting Dashboard
+        |
+        |
+        v
+Alert Generation & Threat Detection
+
+Linux Host (Universal Forwarder)
+        |
+        |
+        v
+Splunk Server (Port 9997)
