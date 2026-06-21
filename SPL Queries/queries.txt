@@ -1,0 +1,43 @@
+# Splunk SIEM Detection Queries
+
+# 1. Failed Login Attempts (Windows)
+index=main EventCode=4625
+| stats count by Account_Name, Source_Network_Address
+
+# 2. Successful Logins (Windows)
+index=main EventCode=4624
+| stats count by Account_Name
+
+# 3. Brute Force Detection
+index=main EventCode=4625
+| stats count by Account_Name
+| where count > 5
+
+# 4. Privilege Escalation Detection
+index=main EventCode=4672
+| table _time Account_Name Privileges
+
+# 5. Linux SSH Failed Logins
+index=main sourcetype=linux_secure "Failed password"
+| stats count by src_ip user
+
+# 6. Suspicious Process Execution
+index=main EventCode=4688
+| table _time New_Process_Name Creator_Process_Name
+
+# 7. Account Lockout Detection
+index=main EventCode=4740
+| table _time Account_Name Caller_Computer_Name
+
+# 8. Reconnaissance Detection (Nmap Scan)
+index=main "nmap"
+| stats count by src_ip
+
+# 9. Multiple Failed SSH Attempts
+index=main sourcetype=linux_secure "Failed password"
+| stats count by src_ip
+| where count > 10
+
+# 10. Critical System Errors
+index=main log_level=critical
+| table _time host message
